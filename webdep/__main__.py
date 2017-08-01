@@ -20,7 +20,7 @@ def main():
 
     group = parser.add_argument_group(title="Server Logging Config")
     group.add_argument("-d", "--debug", action="store_true",
-                        help="set server logging level to DEBUG")
+                       help="set server logging level to DEBUG")
 
     args = parser.parse_args()
 
