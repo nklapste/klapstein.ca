@@ -19,5 +19,8 @@ CONDIR = os.path.join(PUBDIR, "config")
 # WEBPAGES FOLDERS
 WEBDIR = os.path.join(BASEDIR, "webpages")
 
-# LOGS FOLDERS
+# LOGS GLOBALS
 LOGDIR = os.path.join(BASEDIR, "logs")
+MAX_BYTES = 10000000
+BACKUP_COUNT = 1000
+

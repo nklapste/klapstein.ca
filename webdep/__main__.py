@@ -1,9 +1,11 @@
 """ __main__ file that contains the starting argparse function for the cherrypy server """
-import argparse
-import logging
 import os
+import argparse
 
-from webdep import LOGDIR
+import logging
+from logging import handlers
+
+from webdep import LOGDIR, MAX_BYTES, BACKUP_COUNT
 from webdep.server import start_server
 
 
@@ -28,11 +30,11 @@ def main():
     else:
         log_level = logging.INFO
 
-    __log__ = logging.getLogger('basic_server_log')
+    __log__ = logging.getLogger('general')
     __log__.setLevel(log_level)
 
-    # create file handler which logs even debug messages
-    fh = logging.FileHandler(os.path.join(LOGDIR, 'general.log'))
+    # create a rotating file handler which logs even debug messages
+    fh = handlers.RotatingFileHandler(os.path.join(LOGDIR, 'general.log'), 'a',  MAX_BYTES, BACKUP_COUNT)
     fh.setLevel(log_level)
 
     # create console handler with a higher log level
