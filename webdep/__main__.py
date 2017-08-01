@@ -1,3 +1,4 @@
+""" __main__ file that contains the starting argparse function for the cherrypy server """
 import argparse
 import logging
 import os
@@ -7,6 +8,7 @@ from webdep.server import start_server
 
 
 def main():
+    """ main argparse function that grabs the initial/default config for the cherrpy server"""
     parser = argparse.ArgumentParser(description='Discord magic card detail parser')
 
     parser.add_argument('-o', '--host', default="127.0.0.1",

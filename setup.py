@@ -1,3 +1,4 @@
+""" setup and install script for the cherrypy server deployment """
 from setuptools import setup, find_packages
 
 

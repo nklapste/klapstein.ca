@@ -1,3 +1,4 @@
+""" server module that defines the cherrypy server deployment add your options mainly here """
 import logging
 import os
 
@@ -14,6 +15,7 @@ __log__ = logging.getLogger('basic_server_log')
 
 
 def error_page(status, message, traceback, version):
+    """ custom error with jinja templating capability for the cherrypy server"""
     error_vars = {
         'status': status,
         'message': message,
@@ -34,6 +36,7 @@ class Root(object):
 
 
 def start_server(host='127.0.0.1', port=9091):
+    """ start the cherrypy server """
     config = {
         'global': {
             'server.socket_host': host,
