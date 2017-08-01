@@ -16,6 +16,7 @@ ERROR_TEMPLATE = TEMPLATE_ENV.get_template('error.html')
 # get instance of general server log
 __log__ = logging.getLogger('general')
 
+
 def error_page(status, message, traceback, version):
     """ custom error with jinja templating capability for the cherrypy server"""
     error_vars = {
