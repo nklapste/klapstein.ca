@@ -1,9 +1,10 @@
 import logging
+import os
 
 import cherrypy
 from jinja2 import Environment, FileSystemLoader
 
-from webdep import PUBDIR, WEBDIR
+from webdep import PUBDIR, WEBDIR, LOGDIR
 
 TEMPLATE_ENV = Environment(loader=FileSystemLoader(WEBDIR))
 INDEX_TEMPLATE = TEMPLATE_ENV.get_template('index.html')
@@ -38,6 +39,8 @@ def start_server(host='127.0.0.1', port=9091):
             'server.socket_host': host,
             'server.socket_port': port,
             'error_page.default': error_page,
+            'log.access_file': os.path.join(LOGDIR, 'access.log'),
+            'log.error_file': os.path.join(LOGDIR, 'error.log')
         },
         '/': {
             'tools.staticdir.on': True,
@@ -45,6 +48,9 @@ def start_server(host='127.0.0.1', port=9091):
             "tools.sessions.on": True,
         }
     }
+
+    __log__.info('server startup with config: {}'.format(config))
+
     cherrypy.quickstart(
         Root(),
         '/',

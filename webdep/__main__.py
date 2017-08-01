@@ -30,7 +30,7 @@ def main():
     __log__.setLevel(log_level)
 
     # create file handler which logs even debug messages
-    fh = logging.FileHandler(os.path.join(LOGDIR, 'server.log'))
+    fh = logging.FileHandler(os.path.join(LOGDIR, 'general.log'))
     fh.setLevel(log_level)
 
     # create console handler with a higher log level
