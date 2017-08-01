@@ -19,6 +19,6 @@ setup(
         "jinja2"
     ],
     entry_points={
-        'console_scripts': ['start-server = webdep:main'],
+        'console_scripts': ['start-server = webdep.__main__:main'],
     },
 )
