@@ -100,7 +100,8 @@ ENV/
 # mypy
 .mypy_cache/
 
-
+# custom additions
 # pycharm files
 .idea/
 .idea
+
