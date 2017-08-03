@@ -15,7 +15,6 @@ def main():
     for the cherrpy server"""
     parser = argparse.ArgumentParser(description="Discord magic card detail "
                                                  "parser")
-
     parser.add_argument("-o", "--host", default="127.0.0.1",
                         help="host to bind server too default: %(default)s")
     parser.add_argument("-p", "--port", default=9092,
