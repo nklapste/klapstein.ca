@@ -2,7 +2,7 @@
 WEBDEP
 
 A simple python web deployment used to quickly setup easy to modify
-jinja2 and cherrypy based python servers
+jinja2 and cherrypy based python servers.
 """
 
 import os
@@ -21,6 +21,4 @@ WEBDIR = os.path.join(BASEDIR, "webpages")
 
 # LOGS GLOBALS
 LOGDIR = os.path.join(BASEDIR, "logs")
-MAX_BYTES = 10000000
-BACKUP_COUNT = 1000
-
+BACKUP_COUNT = 60
