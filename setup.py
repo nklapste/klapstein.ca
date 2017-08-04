@@ -17,7 +17,8 @@ setup(
     },
     install_requires=[
         "cherrypy",
-        "jinja2"
+        "jinja2",
+        "bottle"
     ],
     entry_points={
         'console_scripts': ['start-server = webdep.__main__:main'],
