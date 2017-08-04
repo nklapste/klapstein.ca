@@ -72,6 +72,7 @@ def start_server(host="127.0.0.1", port=9091, logdir=LOGDIR):
             "server.socket_host": host,
             "server.socket_port": port,
             "error_page.default": error_page,
+            'engine.autoreload_on': False  # TODO REMOVE FOR RELEASE
         },
         "/": {
             "tools.staticdir.on": True,
@@ -100,6 +101,7 @@ def start_bottle_server(host="127.0.0.1", port=9091, logdir=LOGDIR):
             "server.socket_host": host,
             "server.socket_port": port,
             "error_page.default": error_page,
+            'engine.autoreload_on': False  # TODO REMOVE FOR RELEASE
         },
         "/": {
             "tools.staticdir.on": True,
