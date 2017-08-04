@@ -7,7 +7,7 @@ import logging
 from logging import handlers
 
 from webdep import LOGDIR, BACKUP_COUNT
-from webdep.server import start_server
+from webdep.server import start_server, start_bottle_server
 
 
 def main():
@@ -23,6 +23,8 @@ def main():
     group = parser.add_argument_group(title="Server Logging Config")
     group.add_argument("-d", "--debug", action="store_true",
                        help="set server logging level to DEBUG")
+    group.add_argument("-l", "--logdir", action="store_true", default=LOGDIR,
+                       help="set directory to save log files")
 
     args = parser.parse_args()
 
@@ -36,7 +38,8 @@ def main():
     __log__.setLevel(log_level)
 
     # create a rotating file handler which logs even debug messages
-    logpath = os.path.join(LOGDIR, "general.log")
+    os.makedirs(args.logdir, exist_ok=True)
+    logpath = os.path.join(args.logdir, "general.log")
     fh = handlers.TimedRotatingFileHandler(logpath, "D",
                                            backupCount=BACKUP_COUNT)
     fh.setLevel(log_level)
@@ -57,7 +60,8 @@ def main():
     __log__.addHandler(fh)
 
     # start the server
-    start_server(args.host, args.port)
+    # start_server(args.host, args.port, args.logdir)
+    start_bottle_server(args.host, args.port, args.logdir)
 
 if __name__ == "__main__":
     main()

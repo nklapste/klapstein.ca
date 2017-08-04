@@ -5,14 +5,13 @@ import os
 
 import logging
 from logging import handlers
+
 import cherrypy
-from jinja2 import Environment, FileSystemLoader
 
-from webdep import PUBDIR, WEBDIR, LOGDIR, BACKUP_COUNT
+from webdep import PUBDIR, LOGDIR, BACKUP_COUNT
+from webdep.templates import ERROR_TEMPLATE, INDEX_TEMPLATE
+from webdep.bottle_server import BOTTLE_APP
 
-TEMPLATE_ENV = Environment(loader=FileSystemLoader(WEBDIR))
-INDEX_TEMPLATE = TEMPLATE_ENV.get_template("index.html")
-ERROR_TEMPLATE = TEMPLATE_ENV.get_template("error.html")
 
 # get instance of general server log
 __log__ = logging.getLogger("general")
@@ -36,10 +35,11 @@ class Root(object):
 
     @cherrypy.expose
     def index(self):
+        """ home page """
         return INDEX_TEMPLATE.render()
 
 
-def setup_logging():
+def setup_logging(logdir):
     """ setup cherrypy logging to be more advanced having a
     rotating file handler and logging to an internal directory """
     log = cherrypy.log
@@ -49,7 +49,7 @@ def setup_logging():
     log.access_file = ""
 
     # Make a new RotatingFileHandler for the error log.
-    logpath = os.path.join(LOGDIR, "error.log")
+    logpath = os.path.join(logdir, "error.log")
     h = handlers.TimedRotatingFileHandler(logpath, "D",
                                           backupCount=BACKUP_COUNT)
     h.setLevel(logging.DEBUG)
@@ -57,7 +57,7 @@ def setup_logging():
     log.error_log.addHandler(h)
 
     # Make a new RotatingFileHandler for the access log.
-    logpath = os.path.join(LOGDIR, "access.log")
+    logpath = os.path.join(logdir, "access.log")
     h = handlers.TimedRotatingFileHandler(logpath, "D",
                                           backupCount=BACKUP_COUNT)
     h.setLevel(logging.DEBUG)
@@ -65,7 +65,7 @@ def setup_logging():
     log.access_log.addHandler(h)
 
 
-def start_server(host="127.0.0.1", port=9091):
+def start_server(host="127.0.0.1", port=9091, logdir=LOGDIR):
     """ start the cherrypy server """
     config = {
         "global": {
@@ -83,7 +83,7 @@ def start_server(host="127.0.0.1", port=9091):
     __log__.info("server startup with config: {}".format(config))
 
     # setup cherrypy logging in detail (adding rotating file handler logging)
-    setup_logging()
+    setup_logging(logdir)
 
     # start cherrypy server
     cherrypy.quickstart(
@@ -93,5 +93,27 @@ def start_server(host="127.0.0.1", port=9091):
     )
 
 
+def start_bottle_server(host="127.0.0.1", port=9091, logdir=LOGDIR):
+    """ start the cherrypy server with a bottle server grafted on it """
+    config = {
+        "global": {
+            "server.socket_host": host,
+            "server.socket_port": port,
+            "error_page.default": error_page,
+        },
+        "/": {
+            "tools.staticdir.on": True,
+            "tools.staticdir.dir": PUBDIR,
+            "tools.sessions.on": True,
+        }
+    }
+    # setup cherrypy logging in detail (adding rotating file handler logging)
+    setup_logging(logdir)
+    cherrypy.tree.graft(BOTTLE_APP, "/")
+    cherrypy.config.update(config)
+    cherrypy.engine.start()
+    cherrypy.engine.block()
+
+
 if __name__ == "__main__":
-    start_server()
+    start_bottle_server()
