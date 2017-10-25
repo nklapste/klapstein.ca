@@ -13,8 +13,7 @@ from webdep.server import start_server, start_bottle_server
 def main():
     """ main argparse function that grabs the initial/default config
     for the cherrpy server"""
-    parser = argparse.ArgumentParser(description="Discord magic card detail "
-                                                 "parser")
+    parser = argparse.ArgumentParser(description="Basic python server framework")
     parser.add_argument("-o", "--host", default="127.0.0.1",
                         help="host to bind server too default: %(default)s")
     parser.add_argument("-p", "--port", default=9092,
