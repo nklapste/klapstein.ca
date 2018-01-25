@@ -31,7 +31,7 @@ setup(
     include_package_data=True,
     package_data={
         "": ["README.rst"],
-        "klapstein-webdep": ["logs/*", "public/*", "webpages/*"]
+        "klapstein_webdep": ["logs/*", "public/*", "webpages/*"]
     },
     install_requires=[
         "cherrypy",
@@ -40,6 +40,6 @@ setup(
     ],
     tests_require=["pytest"],
     entry_points={
-        "console_scripts": ["start-klapstein.ca = klapstein-webdep.__main__:main"],
+        "console_scripts": ["start-klapstein.ca = klapstein_webdep.__main__:main"],
     },
 )
