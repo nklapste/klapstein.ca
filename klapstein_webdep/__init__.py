@@ -1,5 +1,4 @@
-"""
-WEBDEP
+"""WEBDEP
 
 A simple python web deployment used to quickly setup easy to modify
 jinja2 and cherrypy based python servers.

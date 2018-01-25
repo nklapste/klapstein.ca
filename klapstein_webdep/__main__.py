@@ -1,19 +1,21 @@
-""" __main__ file that contains the starting argparse function for the
-cherrypy server """
+"""Main module that contains the starting argparse function for the
+cherrypy server"""
+
 import os
 import argparse
 
 import logging
 from logging import handlers
 
-from webdep import LOGDIR, BACKUP_COUNT
-from webdep.server import start_server, start_bottle_server
+from klapstein_webdep import LOGDIR, BACKUP_COUNT
+from klapstein_webdep.server import start_server, start_bottle_server
 
 
 def main():
-    """ main argparse function that grabs the initial/default config
+    """Main argparse function that grabs the initial/default config
     for the cherrpy server"""
-    parser = argparse.ArgumentParser(description="Basic python server framework")
+    parser = argparse.ArgumentParser(description="Basic python server "
+                                                 "framework for klapstein.ca")
     parser.add_argument("-o", "--host", default="127.0.0.1",
                         help="host to bind server too default: %(default)s")
     parser.add_argument("-p", "--port", default=9092,
@@ -61,6 +63,7 @@ def main():
     # start the server
     # start_server(args.host, args.port, args.logdir)
     start_bottle_server(args.host, args.port, args.logdir)
+
 
 if __name__ == "__main__":
     main()

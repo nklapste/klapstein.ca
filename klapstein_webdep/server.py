@@ -1,5 +1,5 @@
-""" server module that defines the cherrypy server deployment add your
-options mainly here """
+"""Server module that defines the cherrypy server deployment add your
+options mainly here"""
 
 import os
 
@@ -8,9 +8,9 @@ from logging import handlers
 
 import cherrypy
 
-from webdep import PUBDIR, LOGDIR, BACKUP_COUNT
-from webdep.templates import ERROR_TEMPLATE, INDEX_TEMPLATE
-from webdep.bottle_server import BOTTLE_APP
+from klapstein_webdep import PUBDIR, LOGDIR, BACKUP_COUNT
+from klapstein_webdep.templates import ERROR_TEMPLATE, INDEX_TEMPLATE
+from klapstein_webdep.bottle_server import BOTTLE_APP
 
 
 # get instance of general server log
@@ -18,7 +18,7 @@ __log__ = logging.getLogger("general")
 
 
 def error_page(status, message, traceback, version):
-    """ custom error with jinja templating capability for the cherrypy server"""
+    """Custom error with jinja templating capability for the cherrypy server"""
     error_vars = {
         "status": status,
         "message": message,
@@ -40,8 +40,8 @@ class Root(object):
 
 
 def setup_logging(logdir):
-    """ setup cherrypy logging to be more advanced having a
-    rotating file handler and logging to an internal directory """
+    """Setup cherrypy logging to be more advanced having a
+    rotating file handler and logging to an internal directory"""
     log = cherrypy.log
 
     # Remove the default FileHandlers if present.
@@ -66,7 +66,7 @@ def setup_logging(logdir):
 
 
 def start_server(host="127.0.0.1", port=9091, logdir=LOGDIR):
-    """ start the cherrypy server """
+    """Start the cherrypy server"""
     config = {
         "global": {
             "server.socket_host": host,
@@ -95,7 +95,7 @@ def start_server(host="127.0.0.1", port=9091, logdir=LOGDIR):
 
 
 def start_bottle_server(host="127.0.0.1", port=9091, logdir=LOGDIR):
-    """ start the cherrypy server with a bottle server grafted on it """
+    """Start the cherrypy server with a bottle server grafted on it"""
     config = {
         "global": {
             "server.socket_host": host,
