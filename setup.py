@@ -1,26 +1,45 @@
-""" setup and install script for the cherrypy server deployment """
+#!/usr/bin/python3.6
+# -*- coding: utf-8 -*-
+
+"""klapstein.ca web deployment setup"""
+
 from setuptools import setup, find_packages
 
 
+def readme():
+    with open("README.rst") as f:
+        return f.read()
+
+
 setup(
-    name="webdep",
+    name="klapstein-webdep",
+    version="0.0.0",
+    description="klapstein.ca's python CherryPy deployment",
+    long_description=readme(),
     author="Nathan Klapstein",
     author_email="nklapste@ualberta.ca",
-    version="0.0.0",
-    description="A simple redeployable cherrypy server with goodies",
-    url="https://github.com/nklapste/webdep",
-    download_url="",
-    packages=find_packages(),
+    url="https://github.com/nklapste/klapstein.ca",
+    download_url="https://github.com/nklapste/klapstein.ca/",  # TODO
+    license="Apache V2.0",
+    classifiers=[
+        "License :: OSI Approved :: Apache Software License",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+    ],
+    packages=find_packages(exclude=["test"]),
+    include_package_data=True,
     package_data={
-        '': ['README.md', 'LICENSE'],
-        'webdep': ['logs/*', 'public/*', 'webpages/*']
+        "": ["README.rst"],
+        "klapstein-webdep": ["logs/*", "public/*", "webpages/*"]
     },
     install_requires=[
         "cherrypy",
         "jinja2",
         "bottle"
     ],
+    tests_require=["pytest"],
     entry_points={
-        'console_scripts': ['start-server = webdep.__main__:main'],
+        "console_scripts": ["start-klapstein.ca = klapstein-webdep.__main__:main"],
     },
 )
