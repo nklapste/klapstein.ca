@@ -49,9 +49,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            pytest -v --log-file=test-reports/pytest.log \
-            --log-format='%(asctime)s %(levelname)s %(message)s' \
-             --log-date-format='%Y-%m-%d %H:%M:%S'
+            python setup.py test
 
       - store_artifacts:
           path: test-reports
