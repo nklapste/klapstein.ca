@@ -65,20 +65,26 @@ def setup_logging(logdir):
     log.access_log.addHandler(h)
 
 
-def start_server(host="127.0.0.1", port=9091, logdir=LOGDIR):
+def start_server(host="127.0.0.1", port=9091, logdir=LOGDIR, cert=None,
+                 key=None, bundle=None):
     """Start the cherrypy server"""
     config = {
         "global": {
             "server.socket_host": host,
             "server.socket_port": port,
             "error_page.default": error_page,
-            'engine.autoreload_on': False  # TODO REMOVE FOR RELEASE
+            "engine.autoreload.on": False,  # TODO REMOVE FOR RELEASE
+            "server.ssl_module": "builtin",
+            "server.ssl_certificate": cert,
+            "server.ssl_private_key": key,
+            "server.ssl_certificate_chain": bundle,
         },
         "/": {
             "tools.staticdir.on": True,
             "tools.staticdir.dir": PUBDIR,
             "tools.sessions.on": True,
         }
+
     }
 
     __log__.info("server startup with config: {}".format(config))
@@ -94,14 +100,19 @@ def start_server(host="127.0.0.1", port=9091, logdir=LOGDIR):
     )
 
 
-def start_bottle_server(host="127.0.0.1", port=9091, logdir=LOGDIR):
+def start_bottle_server(host="127.0.0.1", port=9091, logdir=LOGDIR, cert=None,
+                        key=None, bundle=None):
     """Start the cherrypy server with a bottle server grafted on it"""
     config = {
         "global": {
             "server.socket_host": host,
             "server.socket_port": port,
             "error_page.default": error_page,
-            'engine.autoreload_on': False  # TODO REMOVE FOR RELEASE
+            "engine.autoreload.on": False,  # TODO REMOVE FOR RELEASE
+            "server.ssl_module": "builtin",
+            "server.ssl_certificate": cert,
+            "server.ssl_private_key": key,
+            "server.ssl_certificate_chain": bundle,
         },
         "/": {
             "tools.staticdir.on": True,
