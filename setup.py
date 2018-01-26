@@ -58,7 +58,7 @@ setup(
     ],
     tests_require=["pytest",],
     entry_points={
-        "console_scripts": ["start-klapstein.ca = klapstein_webdep.__main__:main"],
+        "console_scripts": ["start-klapsteinca=klapstein_webdep.__main__:main"],
     },
     cmdclass={'test': PyTest},
 )
