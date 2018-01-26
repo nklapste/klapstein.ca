@@ -3,7 +3,25 @@
 
 """klapstein.ca web deployment setup"""
 
+import sys
+
 from setuptools import setup, find_packages
+from setuptools.command.test import test as TestCommand
+
+
+class PyTest(TestCommand):
+    user_options = [('pytest-args=', 'a', "Arguments to pass to pytest")]
+
+    def initialize_options(self):
+        TestCommand.initialize_options(self)
+        self.pytest_args = '-v'
+
+    def run_tests(self):
+        import shlex
+        #import here, cause outside the eggs aren't loaded
+        import pytest
+        errno = pytest.main(shlex.split(self.pytest_args))
+        sys.exit(errno)
 
 
 def readme():
@@ -38,8 +56,9 @@ setup(
         "jinja2",
         "bottle"
     ],
-    tests_require=["pytest"],
+    tests_require=["pytest",],
     entry_points={
         "console_scripts": ["start-klapstein.ca = klapstein_webdep.__main__:main"],
     },
+    cmdclass={'test': PyTest},
 )
