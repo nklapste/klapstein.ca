@@ -3,29 +3,7 @@
 
 """klapstein.ca web deployment setup"""
 
-import sys
-import os
 from setuptools import setup, find_packages
-from setuptools.command.test import test as TestCommand
-
-
-class PyTest(TestCommand):
-    user_options = [('pytest-args=', 'a', "Arguments to pass to pytest")]
-
-    def initialize_options(self):
-        TestCommand.initialize_options(self)
-        os.makedirs("test-reports", exist_ok=True)
-        open("pytest.log", "w").close()
-        self.pytest_args = "-v --log-file=test-reports/pytest.log" \
-                           "--log-format='%(asctime)s %(levelname)s %(message)s' " \
-                           "--log-date-format='%Y-%m-%d %H:%M:%S'"
-
-    def run_tests(self):
-        import shlex
-        #import here, cause outside the eggs aren't loaded
-        import pytest
-        errno = pytest.main(shlex.split(self.pytest_args))
-        sys.exit(errno)
 
 
 def readme():
@@ -64,5 +42,4 @@ setup(
     entry_points={
         "console_scripts": ["start-klapsteinca=klapstein_webdep.__main__:main"],
     },
-    cmdclass={'test': PyTest},
 )
