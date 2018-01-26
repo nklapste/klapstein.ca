@@ -34,7 +34,6 @@ jobs:
             . venv/bin/activate
             pip install .
             pip install pytest
-            pip freeze > requirements.txt
 
       - save_cache:
           paths:
