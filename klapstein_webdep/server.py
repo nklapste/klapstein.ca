@@ -1,20 +1,18 @@
+#!/usr/bin/python3.6
+# -*- coding: utf-8 -*-
+
 """Server module that defines the cherrypy server deployment add your
 options mainly here"""
 
-import os
-
 import logging
-from logging import handlers
 
 import cherrypy
 
-from klapstein_webdep import PUBDIR, LOGDIR, BACKUP_COUNT
+from klapstein_webdep import PUB_DIR
 from klapstein_webdep.templates import ERROR_TEMPLATE, INDEX_TEMPLATE
-from klapstein_webdep.bottle_server import BOTTLE_APP
 
 
-# get instance of general server log
-__log__ = logging.getLogger("general")
+__log__ = logging.getLogger(__name__)
 
 
 def error_page(status, message, traceback, version):
@@ -35,37 +33,11 @@ class Root(object):
 
     @cherrypy.expose
     def index(self):
-        """ home page """
+        """Home page"""
         return INDEX_TEMPLATE.render()
 
 
-def setup_logging(logdir):
-    """Setup cherrypy logging to be more advanced having a
-    rotating file handler and logging to an internal directory"""
-    log = cherrypy.log
-
-    # Remove the default FileHandlers if present.
-    log.error_file = ""
-    log.access_file = ""
-
-    # Make a new RotatingFileHandler for the error log.
-    logpath = os.path.join(logdir, "error.log")
-    h = handlers.TimedRotatingFileHandler(logpath, "D",
-                                          backupCount=BACKUP_COUNT)
-    h.setLevel(logging.DEBUG)
-    h.setFormatter(cherrypy._cplogging.logfmt)
-    log.error_log.addHandler(h)
-
-    # Make a new RotatingFileHandler for the access log.
-    logpath = os.path.join(logdir, "access.log")
-    h = handlers.TimedRotatingFileHandler(logpath, "D",
-                                          backupCount=BACKUP_COUNT)
-    h.setLevel(logging.DEBUG)
-    h.setFormatter(cherrypy._cplogging.logfmt)
-    log.access_log.addHandler(h)
-
-
-def start_server(host="127.0.0.1", port=9091, logdir=LOGDIR, cert=None,
+def start_server(host="127.0.0.1", port=9091, cert=None,
                  key=None, bundle=None):
     """Start the cherrypy server"""
     config = {
@@ -81,16 +53,12 @@ def start_server(host="127.0.0.1", port=9091, logdir=LOGDIR, cert=None,
         },
         "/": {
             "tools.staticdir.on": True,
-            "tools.staticdir.dir": PUBDIR,
+            "tools.staticdir.dir": PUB_DIR,
             "tools.sessions.on": True,
         }
-
     }
 
     __log__.info("server startup with config: {}".format(config))
-
-    # setup cherrypy logging in detail (adding rotating file handler logging)
-    setup_logging(logdir)
 
     # start cherrypy server
     cherrypy.quickstart(
@@ -98,35 +66,3 @@ def start_server(host="127.0.0.1", port=9091, logdir=LOGDIR, cert=None,
         "/",
         config=config
     )
-
-
-def start_bottle_server(host="127.0.0.1", port=9091, logdir=LOGDIR, cert=None,
-                        key=None, bundle=None):
-    """Start the cherrypy server with a bottle server grafted on it"""
-    config = {
-        "global": {
-            "server.socket_host": host,
-            "server.socket_port": port,
-            "error_page.default": error_page,
-            "engine.autoreload.on": False,  # TODO REMOVE FOR RELEASE
-            "server.ssl_module": "builtin",
-            "server.ssl_certificate": cert,
-            "server.ssl_private_key": key,
-            "server.ssl_certificate_chain": bundle,
-        },
-        "/": {
-            "tools.staticdir.on": True,
-            "tools.staticdir.dir": PUBDIR,
-            "tools.sessions.on": True,
-        }
-    }
-    # setup cherrypy logging in detail (adding rotating file handler logging)
-    setup_logging(logdir)
-    cherrypy.tree.graft(BOTTLE_APP, "/")
-    cherrypy.config.update(config)
-    cherrypy.engine.start()
-    cherrypy.engine.block()
-
-
-if __name__ == "__main__":
-    start_bottle_server()

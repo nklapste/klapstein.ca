@@ -1,4 +1,7 @@
-"""WEBDEP
+#!/usr/bin/python3.6
+# -*- coding: utf-8 -*-
+
+"""klapstein.ca
 
 A simple python web deployment used to quickly setup easy to modify
 jinja2 and cherrypy based python servers.
@@ -7,17 +10,17 @@ jinja2 and cherrypy based python servers.
 import os
 
 # DIRECTORY GLOBALS
-BASEDIR = os.path.dirname(os.path.realpath(__file__))
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 # PUBLIC GLOBALS
-PUBDIR = os.path.join(BASEDIR, "public")
-IMGDIR = os.path.join(PUBDIR, "images")
-SCPDIR = os.path.join(PUBDIR, "scripts")
-CONDIR = os.path.join(PUBDIR, "config")
+PUB_DIR = os.path.join(BASE_DIR, "public")
+IMG_DIR = os.path.join(PUB_DIR, "images")
+JS_DIR = os.path.join(PUB_DIR, "scripts")
+CONFIG_DIR = os.path.join(PUB_DIR, "config")
 
 # WEBPAGES GLOBALS
-WEBDIR = os.path.join(BASEDIR, "webpages")
+WEB_DIR = os.path.join(BASE_DIR, "webpages")
 
 # LOGS GLOBALS
-LOGDIR = os.path.join(BASEDIR, "logs")
+LOG_DIR = os.path.join(BASE_DIR, "logs")
 BACKUP_COUNT = 60
